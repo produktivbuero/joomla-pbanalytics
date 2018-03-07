@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="3.8" group="system" method="upgrade">
+  <name>PLG_SYSTEM_PBANALYTICS</name>
+  <creationDate>03/2018</creationDate>
+  <author>Sebastian Brümmer</author>
+  <authorEmail>sebastian@produktivbuero.de</authorEmail>
+  <authorUrl>https://www.produktivbuero.de</authorUrl>
+  <copyright>Copyright (C) 2018 *produktivbüro . All rights reserved</copyright>
+  <license>GNU General Public License version 2 or later</license>
+  <version>0.9.0</version>
+  <description>PLG_SYSTEM_PBANALYTICS_XML_DESCRIPTION</description>
+
+  <!-- Plugin files -->
+  <files>
+    <filename plugin="pbanalytics">pbanalytics.php</filename>
+    <folder>language</folder>
+  </files>
+
+  <!-- Language files -->
+  <languages folder="language">
+    <language tag="de-DE">de-DE/de-DE.plg_system_pbanalytics.ini</language>
+    <language tag="de-DE">de-DE/de-DE.plg_system_pbanalytics.sys.ini</language>
+    <language tag="en-GB">en-GB/en-GB.plg_system_pbanalytics.ini</language>
+    <language tag="en-GB">en-GB/en-GB.plg_system_pbanalytics.sys.ini</language>
+  </languages>
+
+  <!-- Media files -->
+  <media folder="media" destination="plg_system_pbanalytics">
+    <folder>js</folder>
+  </media>
+
+  <!-- Config parameter -->
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field 
+            name="optout" 
+            type="radio" 
+            default="1" 
+            label="PLG_SYSTEM_PBANALYTICS_OPTION_OPTOUT_LABEL" 
+            description="PLG_SYSTEM_PBANALYTICS_OPTION_OPTOUT_DESCRIPTION" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+      </fieldset>
+      
+      <fieldset name="SYSTEM_PBANALYTICS_GOOGLE">
+        <field 
+            name="gaInsert" 
+            type="radio" 
+            default="0" 
+            label="JENABLED" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+
+        <field
+          name="gaProperty"
+          type="text"
+          label="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_PROPERTY_LABEL"
+          description="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_PROPERTY_DESCRIPTION"
+        />
+        
+        <field 
+            name="gaAnonymize" 
+            type="radio" 
+            default="1" 
+            label="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_ANONYMIZE_LABEL" 
+            description="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_ANONYMIZE_DESCRIPTION" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+        
+        <field 
+          name="gaCode" 
+          type="radio" 
+          default="analytics" 
+          label="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_LABEL" 
+          description="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_DESCRIPTION" 
+          class="btn-group">
+            <option value="analytics">PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_ANALYTICS</option>
+            <option value="gtag">PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_GTAG</option>
+        </field>
+      </fieldset>
+
+      <fieldset name="SYSTEM_PBANALYTICS_MATOMO">
+        <field 
+            name="maInsert" 
+            type="radio" 
+            default="0" 
+            label="JENABLED" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+
+        <field
+          name="maServer"
+          type="url"
+          label="PLG_SYSTEM_PBANALYTICS_MATOMO_SERVER_LABEL"
+          description="PLG_SYSTEM_PBANALYTICS_MATOMO_SERVER_DESCRIPTION"
+        />
+
+        <field
+          name="maSiteId"
+          type="number"
+          label="PLG_SYSTEM_PBANALYTICS_MATOMO_SITEID_LABEL"
+          description="PLG_SYSTEM_PBANALYTICS_MATOMO_SITEID_DESCRIPTION"
+          first="1"
+          step="1"
+        />
+
+        <field 
+          name="maCode" 
+          type="radio" 
+          default="javascript" 
+          label="PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_LABEL" 
+          description="PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_DESCRIPTION" 
+          class="btn-group">
+            <option value="javascript">PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_JAVASCRIPT</option>
+            <option value="image">PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_IMAGE</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+
+  <!-- Update servers -->
+  <updateservers>
+    <server type="extension" priority="1" name="ANALYTICS - Updates">https://raw.githubusercontent.com/produktivbuero/joomla-pbanalytics/master/updates.xml</server>
+  </updateservers>
+</extension>
