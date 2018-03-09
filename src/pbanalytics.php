@@ -55,7 +55,7 @@ class plgSystemPbAnalytics extends CMSPlugin
 
     // Basic parameters
     $this->analytics['cookie']['name'] = 'pb-analytics-disable'; // fixed
-    $this->analytics['optout'] = $params->get('optout', '0');
+    $this->analytics['optout'] = $params->get('optout', '1');
 
     // Google parameters
     $gaInsert = $params->get('gaInsert', '0');
