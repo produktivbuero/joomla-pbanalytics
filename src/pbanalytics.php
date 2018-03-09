@@ -243,7 +243,7 @@ class plgSystemPbAnalytics extends CMSPlugin
       $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
     }    
 
-    $regex = '/^.*{plg_system_pbanalytics_optout}.*$/i';
+    $regex = '/{plg_system_pbanalytics_optout}/im';
     $row->text = preg_replace($regex, $insert, $row->text);
   
   }
