@@ -10,6 +10,9 @@
   <version>0.9.1</version>
   <description>PLG_SYSTEM_PBANALYTICS_XML_DESCRIPTION</description>
 
+  <!-- Scripts on install/update/uninstall -->
+  <scriptfile>script.php</scriptfile>
+
   <!-- Plugin files -->
   <files>
     <filename plugin="pbanalytics">pbanalytics.php</filename>
