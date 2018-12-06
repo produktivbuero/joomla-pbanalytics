@@ -43,6 +43,13 @@
           <option value="1">JYES</option>
           <option value="0">JNO</option>
         </field>
+
+        <field
+          type="note"
+          description="PLG_SYSTEM_PBANALYTICS_OPTION_OPTOUT_NOTE"
+          showon="optout:1"
+          class="alert alert-info"
+        />
       </fieldset>
       
       <fieldset name="SYSTEM_PBANALYTICS_GOOGLE">
