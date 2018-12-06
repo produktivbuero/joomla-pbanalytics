@@ -109,16 +109,16 @@ class plgSystemPbAnalytics extends CMSPlugin
     $settings = array();
 
     // Plugin parameters
-    $settings['analytics'] = $this->analytics;
+    $settings = $this->analytics;
 
     // Language strings
-    $settings['analytics']['link']['disable'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE');
-    $settings['analytics']['link']['enable'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLE');
-    $settings['analytics']['status']['disabled'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLED');
-    $settings['analytics']['status']['enabled'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED');
+    $settings['link']['disable'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE');
+    $settings['link']['enable'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLE');
+    $settings['status']['disabled'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLED');
+    $settings['status']['enabled'] = JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED');
 
     // Insert global settings object
-    $script = 'window.pb = '. json_encode($settings, JSON_FORCE_OBJECT);
+    $script = 'window.pb = window.pb || {}; window.pb.analytics = '. json_encode($settings, JSON_FORCE_OBJECT);
     $doc->addScriptDeclaration( $script );
   }
 
