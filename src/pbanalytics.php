@@ -99,9 +99,9 @@ class plgSystemPbAnalytics extends CMSPlugin
    */
   public function onBeforeCompileHead()
   {
-
-    if ($this->app->getName() != 'site') {
-        return true;
+    // fast fail
+    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+        return;
     }
 
     $doc = JFactory::getDocument();
@@ -132,9 +132,9 @@ class plgSystemPbAnalytics extends CMSPlugin
    */
   public function onAfterRender()
   {
-
-    if ($this->app->getName() != 'site') {
-        return true;
+    // fast fail
+    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+        return;
     }
 
     $cookie = $this->analytics['cookie']['name'];
@@ -227,9 +227,9 @@ class plgSystemPbAnalytics extends CMSPlugin
    */
   public function onContentPrepare($context, &$row, &$params, $page = 0)
   {
-
-    if ($this->app->getName() != 'site') {
-        return true;
+    // fast fail
+    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+        return;
     }
 
     // Load language from site
