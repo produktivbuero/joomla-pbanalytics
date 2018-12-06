@@ -16,7 +16,7 @@ use Joomla\CMS\Plugin\CMSPlugin;
  * PbAnalytics plugin.
  *
  * @package  PB Analytics
- * @since    1.0
+ * @since    0.9.0
  */
 class plgSystemPbAnalytics extends CMSPlugin
 {
@@ -24,7 +24,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    * Application object
    *
    * @var    CMSApplication
-   * @since  1.0
+   * @since  0.9.0
    */
   protected $app;
 
@@ -32,7 +32,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    * Affects constructor behavior. If true, language files will be loaded automatically.
    *
    * @var    boolean
-   * @since  1.0
+   * @since  0.9.0
    */
   protected $autoloadLanguage = true;
 
@@ -41,7 +41,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    *
    * @return  void.
    *
-   * @since   1.0
+   * @since   0.9.0
    */
 
   public function __construct(&$subject, $config = array())
@@ -95,7 +95,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    *
    * @return  void.
    *
-   * @since   1.0
+   * @since   0.9.0
    */
   public function onBeforeCompileHead()
   {
@@ -128,7 +128,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    *
    * @return  void.
    *
-   * @since   1.0
+   * @since   0.9.0
    */
   public function onAfterRender()
   {
@@ -223,7 +223,7 @@ class plgSystemPbAnalytics extends CMSPlugin
    *
    * @return  void.
    *
-   * @since   1.0
+   * @since   0.9.0
    */
   public function onContentPrepare($context, &$row, &$params, $page = 0)
   {
