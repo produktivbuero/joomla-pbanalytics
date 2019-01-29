@@ -57,6 +57,17 @@ class plgSystemPbAnalytics extends CMSPlugin
     $this->analytics['cookie']['name'] = 'pb-analytics-disable'; // fixed
     $this->analytics['optout'] = $params->get('optout', '1');
 
+    // Google Tag Manager parameters
+    $gtmInsert = $params->get('gtmInsert', '0');
+    $gtmContainer = $params->get('gtmContainer', '');
+    $this->analytics['gtm'] = array();
+    if ( $gtmInsert && !empty($gtmContainer) ) {
+      $this->analytics['gtm'] = array(
+                        'container' => $gtmContainer,
+                        'code' => $params->get('gtmCode', 'javascript')
+                      );
+    }
+
     // Google parameters
     $gaInsert = $params->get('gaInsert', '0');
     $gaProperty = $params->get('gaProperty', '');
@@ -139,6 +150,33 @@ class plgSystemPbAnalytics extends CMSPlugin
 
     $cookie = $this->analytics['cookie']['name'];
     $insert = '';
+
+    // Google Tag Manager
+    if ( $this->analytics['gtm'] ) {
+      $insert .= "<!-- Google Tag Manager-->\n";
+
+      switch ($this->analytics['gtm']['code']) {
+        case 'iframe':
+          $insert .= "<noscript>";
+          $insert .= "<iframe src='https://www.googletagmanager.com/ns.html?id=".$this->analytics['gtm']['container']."' height='0' width='0' style='display:none;visibility:hidden'></iframe>";
+          $insert .= "</noscript>";
+          break;
+        
+        case 'javascript':
+        default:
+          $insert .= "<script async src='https://www.googletagmanager.com/gtm.js?id=".$this->analytics['gtm']['container']."'></script>\n";
+          $insert .= "<script>\n";
+          $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
+          $insert .= "    console.log('Analytics, Track: gtm.js');\n";
+          $insert .= "    window['dataLayer'] = window['dataLayer'] || [];\n";
+          $insert .= "    window['dataLayer'].push({'gtm.start': new Date().getTime(), event:'gtm.js'});\n";
+          $insert .= "  }\n";
+          $insert .= "</script>\n";
+          break;
+      }
+
+      $insert .= "<!-- End Google Tag Manager -->\n\n";
+    }
 
     // Google Tracking
     if ( $this->analytics['ga'] ) {
@@ -239,7 +277,7 @@ class plgSystemPbAnalytics extends CMSPlugin
     $insert = '';
 
     // Replace shortcode with opt out-link
-    if ( $this->analytics['optout'] && ( $this->analytics['ga'] || $this->analytics['ma'] ) ) {
+    if ( $this->analytics['optout'] && ( $this->analytics['gtm'] || $this->analytics['ma'] || $this->analytics['ma'] ) ) {
       $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
     }    
 

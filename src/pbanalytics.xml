@@ -54,6 +54,38 @@
           class="alert alert-info"
         />
       </fieldset>
+
+      <fieldset name="SYSTEM_PBANALYTICS_TAGMANAGER">
+        <field 
+            name="gtmInsert" 
+            type="radio" 
+            default="0" 
+            label="JENABLED" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+
+        <field
+          name="gtmContainer"
+          type="text"
+          label="PLG_SYSTEM_PBANALYTICS_TAGMANAGER_CONTAINER_LABEL"
+          description="PLG_SYSTEM_PBANALYTICS_TAGMANAGER_CONTAINER_DESCRIPTION"
+          showon="gtmInsert:1"
+        />
+
+        <field 
+              name="gtmCode" 
+              type="radio" 
+              default="javascript" 
+              label="PLG_SYSTEM_PBANALYTICS_TAGMANAGER_OPTION_CODE_LABEL" 
+              description="PLG_SYSTEM_PBANALYTICS_TAGMANAGER_OPTION_CODE_DESCRIPTION" 
+              class="btn-group"
+              showon="gtmInsert:1">
+            <option value="javascript">PLG_SYSTEM_PBANALYTICS_TAGMANAGER_OPTION_CODE_JAVASCRIPT</option>
+            <option value="iframe">PLG_SYSTEM_PBANALYTICS_TAGMANAGER_OPTION_CODE_IFRAME</option>
+        </field>
+      </fieldset>
       
       <fieldset name="SYSTEM_PBANALYTICS_GOOGLE">
         <field 
