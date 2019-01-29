@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package     PB Analytics
  * @since       0.9.2
  */
-class plgSystemPbLiveZillaInstallerScript
+class plgSystemPbAnalyticsInstallerScript
 {
   /**
    * Constructor
