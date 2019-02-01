@@ -164,12 +164,14 @@ class plgSystemPbAnalytics extends CMSPlugin
         
         case 'javascript':
         default:
-          $insert .= "<script async src='https://www.googletagmanager.com/gtm.js?id=".$this->analytics['gtm']['container']."'></script>\n";
           $insert .= "<script>\n";
           $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
           $insert .= "    console.log('Analytics, Track: gtm.js');\n";
-          $insert .= "    window['dataLayer'] = window['dataLayer'] || [];\n";
-          $insert .= "    window['dataLayer'].push({'gtm.start': new Date().getTime(), event:'gtm.js'});\n";
+          $insert .= "    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n";
+          $insert .= "    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n";
+          $insert .= "    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n";
+          $insert .= "    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n";
+          $insert .= "    })(window,document,'script','dataLayer','".$this->analytics['gtm']['container']."');\n";
           $insert .= "  }\n";
           $insert .= "</script>\n";
           break;
@@ -184,11 +186,12 @@ class plgSystemPbAnalytics extends CMSPlugin
 
       switch ($this->analytics['ga']['code']) {
         case 'gtag':
-          $insert .= "<script async src='https://www.googletagmanager.com/gtag/js?id=".$this->analytics['ga']['property']."'></script>\n";
           $insert .= "<script>\n";
           $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
           $insert .= "    console.log('Analytics, Track: gtag.js');\n";
-          $insert .= "    window.dataLayer = window.dataLayer || [];\n";
+          $insert .= "    (function(w,d,s,i) {w.dataLayer=w.dataLayer||[];g=d.createElement(s),m=d.getElementsByTagName(s)[0];\n";
+          $insert .= "    g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+i; m.parentNode.insertBefore(g,m);\n";
+          $insert .= "    })(window,document,'script','".$this->analytics['ga']['property']."');\n";
           $insert .= "    function gtag(){dataLayer.push(arguments);}\n";
           $insert .= "    gtag('js', new Date());\n";
           $insert .= $this->analytics['ga']['anonymize'] == "0" ? "    gtag('config', '".$this->analytics['ga']['property']."');\n" : "    gtag('config', '".$this->analytics['ga']['property']."', { 'anonymize_ip': true });\n";
@@ -198,11 +201,13 @@ class plgSystemPbAnalytics extends CMSPlugin
         
         case 'analytics':
         default:
-          $insert .= "<script async src='https://www.google-analytics.com/analytics.js'></script>\n";
           $insert .= "<script>\n";
           $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
           $insert .= "    console.log('Analytics, Track: analytics.js');\n";
-          $insert .= "    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;\n";
+          $insert .= "    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n";
+          $insert .= "    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n";
+          $insert .= "    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n";
+          $insert .= "    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n";
           $insert .= "    ga('create', '".$this->analytics['ga']['property']."', 'auto');\n";
           $insert .= $this->analytics['ga']['anonymize'] == "0" ? "" : "    ga('set', 'anonymizeIp', true);\n";
           $insert .= "    ga('send', 'pageview');\n";
@@ -225,15 +230,18 @@ class plgSystemPbAnalytics extends CMSPlugin
         
         case 'javascript':
         default:
-          $insert .= "<script async src='".$this->analytics['ma']['server']."/piwik.js'></script>\n";
           $insert .= "<script>\n";
           $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
           $insert .= "    console.log('Analytics, Track: piwik.js');\n";
-          $insert .= "    var _paq = _paq || [];\n";
+          $insert .= "    var _paq = window._paq || [];\n";
           $insert .= "    _paq.push(['trackPageView']);\n";
           $insert .= "    _paq.push(['enableLinkTracking']);\n";
-          $insert .= "    _paq.push(['setTrackerUrl', '".$this->analytics['ma']['server']."/piwik.php']);\n";
-          $insert .= "    _paq.push(['setSiteId', ".$this->analytics['ma']['siteid']."]);\n";
+          $insert .= "    (function() {\n";
+          $insert .= "      _paq.push(['setTrackerUrl', '".$this->analytics['ma']['server']."/piwik.php']);\n";
+          $insert .= "      _paq.push(['setSiteId', ".$this->analytics['ma']['siteid']."]);\n";
+          $insert .= "      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n";
+          $insert .= "      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);\n";
+          $insert .= "    })();\n";
           $insert .= "  }\n";
           $insert .= "</script>\n";
           break;
