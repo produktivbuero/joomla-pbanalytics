@@ -277,7 +277,7 @@ class plgSystemPbAnalytics extends CMSPlugin
     $insert = '';
 
     // Replace shortcode with opt out-link
-    if ( $this->analytics['optout'] && ( $this->analytics['gtm'] || $this->analytics['ma'] || $this->analytics['ma'] ) ) {
+    if ( $this->analytics['optout'] && ( $this->analytics['gtm'] || $this->analytics['ga'] || $this->analytics['ma'] ) ) {
       $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
     }    
 
