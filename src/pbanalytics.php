@@ -51,18 +51,12 @@ class plgSystemPbAnalytics extends CMSPlugin
 
     $params = new JRegistry($config['params']);
 
-    $this->analytics = array();
-
-    // Basic parameters
-    $this->analytics['cookie']['name'] = 'pb-analytics-disable'; // fixed
-    $this->analytics['optout'] = $params->get('optout', '1');
-
     // Google Tag Manager parameters
     $gtmInsert = $params->get('gtmInsert', '0');
     $gtmContainer = $params->get('gtmContainer', '');
-    $this->analytics['gtm'] = array();
+    $gtmSettings = array();
     if ( $gtmInsert && !empty($gtmContainer) ) {
-      $this->analytics['gtm'] = array(
+      $gtmSettings = array(
                         'container' => $gtmContainer,
                         'code' => $params->get('gtmCode', 'javascript')
                       );
@@ -71,10 +65,9 @@ class plgSystemPbAnalytics extends CMSPlugin
     // Google parameters
     $gaInsert = $params->get('gaInsert', '0');
     $gaProperty = $params->get('gaProperty', '');
-
-    $this->analytics['ga'] = array();
+    $gaSettings = array();
     if ( $gaInsert && !empty($gaProperty) ) {
-      $this->analytics['ga'] = array(
+      $gaSettings = array(
                         'property' => $gaProperty,
                         'code' => $params->get('gaCode', 'analytics'),
                         'anonymize' => $params->get('gaAnonymize', '1')
@@ -85,19 +78,29 @@ class plgSystemPbAnalytics extends CMSPlugin
     $maInsert = $params->get('maInsert', '0');
     $maServer = $params->get('maServer', '');
     $maSiteId = $params->get('maSiteId', '');
-    
     $host = '//'.parse_url($maServer, PHP_URL_HOST);
     $fragments = array_filter(explode('/', parse_url($maServer, PHP_URL_PATH)), function($value) { return ($value != '' && strpos($value,'.') === false); });
     $server = $host.'/'.implode('/', $fragments);
-    
-    $this->analytics['ma'] = array();
+    $maSettings = array();
     if ( $maInsert && !empty($maServer) && !empty($maSiteId) ) {
-      $this->analytics['ma'] = array(
+      $maSettings = array(
                         'server' => $server,
                         'siteid' => $maSiteId,
                         'code' => $params->get('maCode', 'javascript')
                       );
     }
+
+    // All parameters
+    $this->analytics = array();
+
+    if ( !empty($gtmSettings) || !empty($gaSettings) || !empty($maSettings) ) {
+      $this->analytics['cookie']['name'] = 'pb-analytics-disable';
+      $this->analytics['optout'] = $params->get('optout', '1');
+      $this->analytics['gtm'] = $gtmSettings;
+      $this->analytics['ga'] = $gaSettings;
+      $this->analytics['ma'] = $maSettings;
+    }
+
       
   }
 
@@ -111,7 +114,7 @@ class plgSystemPbAnalytics extends CMSPlugin
   public function onBeforeCompileHead()
   {
     // fast fail
-    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+    if ($this->app->isAdmin() || empty($this->analytics) ) {
         return;
     }
 
@@ -144,7 +147,7 @@ class plgSystemPbAnalytics extends CMSPlugin
   public function onAfterRender()
   {
     // fast fail
-    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+    if ($this->app->isAdmin() || empty($this->analytics) ) {
         return;
     }
 
@@ -274,7 +277,7 @@ class plgSystemPbAnalytics extends CMSPlugin
   public function onContentPrepare($context, &$row, &$params, $page = 0)
   {
     // fast fail
-    if ($this->app->isAdmin() || (!isset($this->analytics['ga']) && !isset($this->analytics['ma'])) ) {
+    if ($this->app->isAdmin() || empty($this->analytics) ) {
         return;
     }
 
@@ -285,7 +288,7 @@ class plgSystemPbAnalytics extends CMSPlugin
     $insert = '';
 
     // Replace shortcode with opt out-link
-    if ( $this->analytics['optout'] && ( $this->analytics['gtm'] || $this->analytics['ga'] || $this->analytics['ma'] ) ) {
+    if ( $this->analytics['optout'] && !empty($this->analytics) ) {
       $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
     }    
 
