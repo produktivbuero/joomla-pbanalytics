@@ -70,7 +70,8 @@ class plgSystemPbAnalytics extends CMSPlugin
       $gaSettings = array(
                         'property' => $gaProperty,
                         'code' => $params->get('gaCode', 'analytics'),
-                        'anonymize' => $params->get('gaAnonymize', '1')
+                        'anonymize' => $params->get('gaAnonymize', '1'),
+                        'downloads' => $params->get('gaDownloads', 'none')
                       );
     }
 
@@ -90,12 +91,17 @@ class plgSystemPbAnalytics extends CMSPlugin
                       );
     }
 
+    // Media configuration: extensions
+    $com_media_params = JComponentHelper::getParams('com_media');
+    $upload_extensions = $com_media_params->get('upload_extensions');
+
     // All parameters
     $this->analytics = array();
 
     if ( !empty($gtmSettings) || !empty($gaSettings) || !empty($maSettings) ) {
       $this->analytics['cookie']['name'] = 'pb-analytics-disable';
       $this->analytics['optout'] = $params->get('optout', '1');
+      $this->analytics['extensions'] = $upload_extensions;
       $this->analytics['gtm'] = $gtmSettings;
       $this->analytics['ga'] = $gaSettings;
       $this->analytics['ma'] = $maSettings;
@@ -185,6 +191,17 @@ class plgSystemPbAnalytics extends CMSPlugin
 
     // Google Tracking
     if ( $this->analytics['ga'] ) {
+
+      // Track download links as page view
+      $selector = array();
+      if ( $this->analytics['ga']['downloads'] == 'view' && !empty($this->analytics['extensions']) ) {
+        $extensions = explode(',', $this->analytics['extensions']);
+        foreach ($extensions as $ext) {
+            array_push($selector, 'a[href$=".'.$ext.'"]');
+        }
+        $selector = implode(', ', $selector);
+      }
+
       $insert .= "<!-- Google Tracking-->\n";
 
       switch ($this->analytics['ga']['code']) {
@@ -198,6 +215,17 @@ class plgSystemPbAnalytics extends CMSPlugin
           $insert .= "    function gtag(){dataLayer.push(arguments);}\n";
           $insert .= "    gtag('js', new Date());\n";
           $insert .= $this->analytics['ga']['anonymize'] == "0" ? "    gtag('config', '".$this->analytics['ga']['property']."');\n" : "    gtag('config', '".$this->analytics['ga']['property']."', { 'anonymize_ip': true });\n";
+
+          // Track download links as page view
+          if ( !empty($selector) ) {
+            $insert .= "    var elements = document.querySelectorAll('".$selector."');\n";
+            $insert .= "    for (var i = 0; i < elements.length; i++) {\n";
+            $insert .= "      elements[i].addEventListener('click', function() {\n";
+            $insert .= "        gtag('config', '".$this->analytics['ga']['property']."', {'page_path': this.href.replace('/http:\/\/|https:\/\//gi',''), 'page_title': this.text});\n";
+            $insert .= "      });\n";
+            $insert .= "    }\n";
+          }
+
           $insert .= "  }\n";
           $insert .= "</script>\n";
           break;
@@ -214,6 +242,17 @@ class plgSystemPbAnalytics extends CMSPlugin
           $insert .= "    ga('create', '".$this->analytics['ga']['property']."', 'auto');\n";
           $insert .= $this->analytics['ga']['anonymize'] == "0" ? "" : "    ga('set', 'anonymizeIp', true);\n";
           $insert .= "    ga('send', 'pageview');\n";
+
+          // Track download links as page view
+          if ( !empty($selector) ) {
+            $insert .= "    var elements = document.querySelectorAll('".$selector."');\n";
+            $insert .= "    for (var i = 0; i < elements.length; i++) {\n";
+            $insert .= "      elements[i].addEventListener('click', function() {\n";
+            $insert .= "        ga('send', 'pageview', {'page': this.href.replace('/http:\/\/|https:\/\//gi',''),'title': this.text});\n";
+            $insert .= "      });\n";
+            $insert .= "    }\n";
+          }
+
           $insert .= "  }\n";
           $insert .= "</script>\n";
           break;

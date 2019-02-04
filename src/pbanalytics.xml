@@ -129,6 +129,18 @@
             <option value="analytics">PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_ANALYTICS</option>
             <option value="gtag">PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_CODE_GTAG</option>
         </field>
+        
+        <field 
+              name="gaDownloads" 
+              type="radio" 
+              default="none" 
+              label="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_DONWLOADS_LABEL" 
+              description="PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_DONWLOADS_DESCRIPTION" 
+              class="btn-group"
+              showon="gaInsert:1">
+          <option value="view">PLG_SYSTEM_PBANALYTICS_GOOGLE_OPTION_DOWNLOADS_PAGEVIEW</option>
+          <option value="none">JNONE</option>
+        </field>
       </fieldset>
 
       <fieldset name="SYSTEM_PBANALYTICS_MATOMO">
