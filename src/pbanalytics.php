@@ -316,7 +316,7 @@ class plgSystemPbAnalytics extends CMSPlugin
   public function onContentPrepare($context, &$row, &$params, $page = 0)
   {
     // fast fail
-    if ($this->app->isAdmin() || empty($this->analytics) ) {
+    if ($this->app->isAdmin() || empty($this->analytics) || !$this->analytics['optout'] || !in_array($context, array('com_content.article')) || JString::strpos($row->text, '{plg_system_pbanalytics_optout') === false ) {
         return;
     }
 
@@ -324,13 +324,10 @@ class plgSystemPbAnalytics extends CMSPlugin
     $lang = JFactory::getLanguage();
     $lang->load('plg_'.$this->_type.'_'.$this->_name, JPATH_SITE);
 
-    $insert = '';
+    // Replacement
+    $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
 
     // Replace shortcode with opt out-link
-    if ( $this->analytics['optout'] && !empty($this->analytics) ) {
-      $insert = '<a href="javascript:pbAnalyticsOptOut();" id="analyticsOptOut">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_DISABLE').'</a><span id="analyticsStatus">'.JText::_('PLG_SYSTEM_PBANALYTICS_PRIVACY_ENABLED').'</span>';
-    }    
-
     $regex = '/{plg_system_pbanalytics_optout}/im';
     $row->text = preg_replace($regex, $insert, $row->text);
   
