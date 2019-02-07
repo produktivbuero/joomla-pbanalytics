@@ -221,7 +221,7 @@ class plgSystemPbAnalytics extends CMSPlugin
             $insert .= "    var elements = document.querySelectorAll('".$selector."');\n";
             $insert .= "    for (var i = 0; i < elements.length; i++) {\n";
             $insert .= "      elements[i].addEventListener('click', function() {\n";
-            $insert .= "        gtag('config', '".$this->analytics['ga']['property']."', {'page_path': this.href.replace('/http:\/\/|https:\/\//gi',''), 'page_title': this.text});\n";
+            $insert .= "        gtag('config', '".$this->analytics['ga']['property']."', {'page_path': this.href.replace(/^.*\/\/[^\/]+/, ''), 'page_title': this.text});\n";
             $insert .= "      });\n";
             $insert .= "    }\n";
           }
@@ -248,7 +248,7 @@ class plgSystemPbAnalytics extends CMSPlugin
             $insert .= "    var elements = document.querySelectorAll('".$selector."');\n";
             $insert .= "    for (var i = 0; i < elements.length; i++) {\n";
             $insert .= "      elements[i].addEventListener('click', function() {\n";
-            $insert .= "        ga('send', 'pageview', {'page': this.href.replace('/http:\/\/|https:\/\//gi',''),'title': this.text});\n";
+            $insert .= "        ga('send', 'pageview', {'page': this.href.replace(/^.*\/\/[^\/]+/, ''),'title': this.text});\n";
             $insert .= "      });\n";
             $insert .= "    }\n";
           }
