@@ -279,10 +279,11 @@ class plgSystemPbAnalytics extends CMSPlugin
           $insert .= "    _paq.push(['trackPageView']);\n";
           $insert .= "    _paq.push(['enableLinkTracking']);\n";
           $insert .= "    (function() {\n";
-          $insert .= "      _paq.push(['setTrackerUrl', '".$this->analytics['ma']['server']."/piwik.php']);\n";
+          $insert .= "      var u='".$this->analytics['ma']['server']."';\n";
+          $insert .= "      _paq.push(['setTrackerUrl', u+'/piwik.php']);\n";
           $insert .= "      _paq.push(['setSiteId', ".$this->analytics['ma']['siteid']."]);\n";
           $insert .= "      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n";
-          $insert .= "      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);\n";
+          $insert .= "      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'/piwik.js'; s.parentNode.insertBefore(g,s);\n";
           $insert .= "    })();\n";
           $insert .= "  }\n";
           $insert .= "</script>\n";
