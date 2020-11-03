@@ -183,6 +183,17 @@
             <option value="javascript">PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_JAVASCRIPT</option>
             <option value="image">PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_CODE_IMAGE</option>
         </field>
+
+        <field 
+            name="maCookies" 
+            type="radio" 
+            default="1" 
+            label="PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_COOKIES_LABEL" 
+            description="PLG_SYSTEM_PBANALYTICS_MATOMO_OPTION_COOKIES_DESCRIPTION" 
+            class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
       </fieldset>
     </fields>
   </config>

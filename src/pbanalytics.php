@@ -79,6 +79,7 @@ class plgSystemPbAnalytics extends CMSPlugin
     $maInsert = $params->get('maInsert', '0');
     $maServer = $params->get('maServer', '');
     $maSiteId = $params->get('maSiteId', '');
+    $maCookies = $params->get('maCookies', '1');
     $host = '//'.parse_url($maServer, PHP_URL_HOST);
     $fragments = array_filter(explode('/', parse_url($maServer, PHP_URL_PATH)), function($value) { return ($value != '' && strpos($value,'.') === false); });
     $server = $host.'/'.implode('/', $fragments);
@@ -87,6 +88,7 @@ class plgSystemPbAnalytics extends CMSPlugin
       $maSettings = array(
                         'server' => $server,
                         'siteid' => $maSiteId,
+                        'cookies' => $maCookies,
                         'code' => $params->get('maCode', 'javascript')
                       );
     }
@@ -276,6 +278,7 @@ class plgSystemPbAnalytics extends CMSPlugin
           $insert .= "  if (document.cookie.indexOf('".$cookie."=true') == -1) {\n";
           $insert .= "    console.log('Analytics, Track: piwik.js');\n";
           $insert .= "    var _paq = window._paq || [];\n";
+          if ($this->analytics['ma']['cookies'] == '0') $insert .= "    _paq.push(['disableCookies']);\n";
           $insert .= "    _paq.push(['trackPageView']);\n";
           $insert .= "    _paq.push(['enableLinkTracking']);\n";
           $insert .= "    (function() {\n";
